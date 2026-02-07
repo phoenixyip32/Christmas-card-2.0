@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christmas Card</title>
+    <title>For 阿彤 - Christmas Card</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* CSS Reset & Global Styles */
+        /* CSS Reset */
         * {
             margin: 0;
             padding: 0;
@@ -13,298 +18,339 @@
         }
 
         body {
-            background: #333;
+            /* 背景改用更有聖誕氣氛的深色木紋或深紅質感 */
+            background: radial-gradient(circle at center, #2b32b2, #141e30);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: Arial, sans-serif;
+            font-family: 'Crimson Text', serif; /* 內文用襯線體 */
             padding: 20px;
-            overflow-x: hidden; /* 防止雪花導致的滾動條閃爍 */
+            overflow: hidden; 
+            perspective: 1500px; /* 增加透視感 */
         }
 
-        /* Layout Containers */
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto;
-        }
-
+        /* -----------------------
+           Layout & Containers
+           ----------------------- */
         .book {
             position: relative;
             width: 100%;
-            max-width: 595px;
-            aspect-ratio: 1 / 1.4142;
-            perspective: 2500px;
+            max-width: 500px; /* 稍微縮小一點讓比例更好看 */
+            aspect-ratio: 1 / 1.45;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
         }
         
-        /* Page Structure */
         .page {
             position: absolute;
             width: 100%;
             height: 100%;
             transform-origin: left center;
-            transition: transform 1s;
+            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1); /* 更自然的翻頁曲線 */
             transform-style: preserve-3d;
             cursor: pointer;
-            background: #fff;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 4px 8px 8px 4px;
+            box-shadow: inset -3px 0px 20px rgba(0,0,0,0.1), 0px 5px 15px rgba(0,0,0,0.15); /* 增加書脊陰影 */
         }
-        
-        /* Z-Index Logic */
-        .page-1 { z-index: 6; }
-        .page-2 { z-index: 5; }
-        .page-3 { z-index: 4; }
-        .page-4 { z-index: 3; }
-        .page-5 { z-index: 2; }
-        .page-6 { z-index: 1; }
-        
-        /* Page Content Faces */
+
+        /* -----------------------
+           Page Faces (Front/Back)
+           ----------------------- */
         .front, .back {
             position: absolute;
             width: 100%;
             height: 100%;
-            padding: 5%;
+            padding: 30px 40px; /* 增加內邊距 */
             backface-visibility: hidden;
             display: flex;
-            align-items: flex-start;
-            justify-content: flex-start;
             flex-direction: column;
-            background: white;
-            border-radius: 5px;
+            border-radius: 4px 8px 8px 4px;
+            overflow: hidden;
         }
         
+        /* 紙張質感優化 */
+        .front, .back {
+            background-color: #fdfbf7; /* 米白色護眼 */
+            background-image: linear-gradient(to right, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 5%); /* 書脊處的摺痕陰影 */
+        }
+
         .front {
-            background: linear-gradient(45deg, #ff0000, #990000);
-            color: white;
+            /* 封面特殊樣式 */
+            color: #333;
+            align-items: center;
         }
         
+        /* 封面特別處理 */
+        .page-1 .front {
+            background: linear-gradient(135deg, #d31027, #ea384d);
+            color: #fff;
+            border: 2px solid #a80016;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.2);
+        }
+
         .back {
-            background: white;
-            color: #333;
+            background-color: #fdfbf7;
             transform: rotateY(180deg);
-        }
-        
-        /* White Background Pages */
-        .page-2 .front, .page-3 .front, .page-4 .front, .page-5 .front, .page-6 .front {
-            background: white;
-            color: #333;
+            background-image: linear-gradient(to left, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 5%); /* 背面書脊陰影方向相反 */
         }
         
         .flipped {
             transform: rotateY(-180deg);
         }
 
-        /* Typography Utilities */
-        .text-xl {
-            font-size: clamp(24px, 5vw, 36px);
-            margin-bottom: 4vh;
+        /* -----------------------
+           Typography & Content
+           ----------------------- */
+        h1, h2 {
+            font-family: 'Dancing Script', cursive;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
-        .text-lg {
-            font-size: clamp(18px, 4vw, 24px);
-            margin-bottom: 2vh;
+        h1.text-xl {
+            font-size: clamp(32px, 6vw, 56px);
+            margin-top: 20px;
         }
-        
-        /* 新增：用於替代 &nbsp; 的縮排 Class，保持視覺一致 */
+
+        h2 {
+            font-size: clamp(24px, 5vw, 36px);
+            align-self: flex-start;
+            color: #d31027; /* 標題用深紅色 */
+        }
+
+        p, h3, h4, h5 {
+            font-size: clamp(16px, 3.5vw, 19px);
+            line-height: 1.6;
+            color: #444; /* 深灰色字體比純黑更舒服 */
+            font-weight: normal;
+            text-align: justify; /* 兩端對齊 */
+        }
+
+        /* 模擬段落縮排，替代 &nbsp; */
         .text-indent {
-            text-indent: 2em; /* 大約等於 7 個 &nbsp; 的寬度 */
-            margin-top: 10px;
-            margin-bottom: 10px;
+            text-indent: 2em;
+            margin-bottom: 15px;
+            display: block;
         }
-        
-        /* 由於移除了 P 標籤包裹，這裡確保 h3, h4, h5 顯示效果與之前一致 (Bold) */
-        .book h3, .book h4, .book h5 {
-            font-weight: bold;
-            width: 100%; /* 確保文字換行行為一致 */
-            line-height: 1.5; /* 增加可讀性，原本 P 標籤可能有類似繼承 */
-        }
-        
-        /* 原代碼中 h4, h5 大小未定義，繼承 user agent 樣式。
-           由於原本 * {margin:0} 重置了所有 margin，
-           這裡不需要額外設置 margin */
 
         .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 28px;
+            color: #d31027;
             align-self: flex-end;
-            margin-top: 0px; /* 原代碼為 0px */
-            margin-right: 15px;
-            font-size: 20px;
+            margin-top: auto;
+            margin-bottom: 10px;
         }
 
-        .centered-image {
+        /* -----------------------
+           Images (Polaroid Style)
+           ----------------------- */
+        .photo-frame {
+            background: #fff;
+            padding: 8px 8px 25px 8px; /* 底部留白多一點扮即影即有 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transform: rotate(-2deg); /* 輕微旋轉增加隨意感 */
+            transition: transform 0.3s;
+            max-width: 90%;
+            margin: 15px auto;
+        }
+        
+        .photo-frame:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .photo-frame img {
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 10px 0;
+            height: auto;
+            display: block;
+            filter: sepia(20%); /* 輕微懷舊色調 */
         }
 
-        /* Snowflake Animation */
+        /* -----------------------
+           Decorations
+           ----------------------- */
         .snowflake {
-            color: white;
+            color: rgba(255, 255, 255, 0.8);
             position: fixed;
-            font-size: clamp(16px, 3vw, 20px);
+            top: -10px;
+            font-size: clamp(16px, 3vw, 24px);
             animation: fall linear infinite;
             pointer-events: none;
-            z-index: 9999; /* 確保雪花在最上層 */
+            z-index: 9999;
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(-5vh);
-                opacity: 0;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(105vh);
-                opacity: 0;
-            }
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(110vh) translateX(20px) rotate(360deg); opacity: 0; }
         }
 
-        /* Responsive Design */
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .book {
-                max-width: 100%;
-            }
-            .front, .back {
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
+            .front, .back { padding: 20px 25px; }
+            .book { aspect-ratio: 1 / 1.5; }
         }
     </style>
 </head>
 <body>
-    <main class="container">
-        <div class="book">
-            <section class="page page-1">
-                <div class="front">
-                    <h1 class="text-xl">✨Merry Chirstmas✨</h1>
-                    <p class="text-lg">點擊打開卡片</p>
-                    <div style="width: 100%;"> 
-                        <img src="https://png.pngtree.com/png-clipart/20210310/original/pngtree-christmas-christmas-tree-and-snowman-png-image_5933267.jpg" alt="Christmas Decoration" style="width: 100%; height: auto; display: block;"> 
-                    </div>
-                </div>
-                <div class="back"></div>
-            </section>
 
-            <section class="page page-2">
-                <div class="front">
-                    <h2>Dear 阿彤:</h2>
-                    <br>
-                    <h4 class="text-indent">
-                        首先 聖誕快樂先 我知你最近都瞓得唔好 所以就準備咗啲禮物希望可以幫到你啦 咁我就準備咗個夜燈 我知你瞓覺鍾意開燈 但係開燈瞓覺都唔係咁好㗎 咁你就可以用佢夜晚就有啲光就唔使開燈瞓覺 唔使掁住隻眼可能就瞓得好啲 
-                        之後另外一樣就係助眠噴劑？ 佢好似係喺你瞓覺前噴落個脷底兩下 個盒後面都有說明書嘅 我本身諗住買類似助眠香薰嘅 但係去到買我又唔知你會唔會唔鍾意啲味 之後個sales就推介咗呢個畀我 咁就穩陣啲 你咪你唔鍾意陣味啦 希望呢兩樣嘢可以幫到你瞓個好覺啦 
-                        好啦最後啦 都係一樣啦自己照顧自己身體啦 你知你自己身體唔好就唔好捱咁多夜 食咁多煙啦 睇住自己身體呀 其他留返後面封信講 聖誕快樂啦
-                    </h4>
-                    <div class="signature">謙</div>
-                    <div class="centered-image">
-                        <img src="https://img.freepik.com/premium-vector/drawing-santa-carrying-bag-presents_1450-565.jpg" alt="Santa" width="35%">
-                    </div>
+    <main class="book" id="book">
+        
+        <section class="page page-1">
+            <div class="front">
+                <h1 class="text-xl">✨Merry Christmas✨</h1>
+                <p style="font-family: 'Dancing Script'; font-size: 1.5em; color: rgba(255,255,255,0.9);">Tap to Open</p>
+                <div class="photo-frame" style="transform: rotate(3deg); margin-top: 30px;"> 
+                    <img src="https://png.pngtree.com/png-clipart/20210310/original/pngtree-christmas-christmas-tree-and-snowman-png-image_5933267.jpg" alt="Christmas Decoration"> 
                 </div>
-                <div class="back"></div>
-            </section>
+            </div>
+            <div class="back"></div>
+        </section>
 
-            <section class="page page-3">
-                <div class="front">
-                    <h1 class="text-xl">請做好心理準備再進入下一頁 我竟然寫咗封我寫完又唔會開心 你睇完又唔會開心既信出嚟 仲要寫到1999 不如當冇封信好過</h1>
+        <section class="page page-2">
+            <div class="front">
+                <h2>Dear 阿彤:</h2>
+                <div class="text-indent">
+                    首先 聖誕快樂先！我知你最近都瞓得唔好，所以就準備咗啲禮物希望可以幫到你啦。咁我就準備咗個夜燈，我知你瞓覺鍾意開燈，但係開燈瞓覺都唔係咁好㗎，咁你就可以用佢夜晚有啲微光，就唔使開大燈瞓覺，唔使掁住隻眼可能就瞓得好啲。
                 </div>
-                <div class="back"></div>
-            </section>
+                <div class="text-indent">
+                    之後另外一樣就係助眠噴劑？佢好似係喺你瞓覺前噴落個脷底兩下，個盒後面都有說明書嘅。我本身諗住買類似助眠香薰嘅，但係去到買我又唔知你會唔會唔鍾意啲味，之後個 Sales 就推介咗呢個畀我，咁就穩陣啲，驚你唔鍾意陣味啦。希望呢兩樣嘢可以幫到你瞓個好覺啦！
+                </div>
+                <div class="text-indent">
+                   好啦最後啦，都係一樣啦自己照顧自己身體啦，你知你自己身體唔好就唔好捱咁多夜，食咁多煙啦，睇住自己身體呀。其他留返後面封信講。聖誕快樂啦！
+                </div>
+                <div class="signature">謙</div>
+                <div class="photo-frame" style="width: 50%; align-self: center;">
+                    <img src="https://img.freepik.com/premium-vector/drawing-santa-carrying-bag-presents_1450-565.jpg" alt="Santa">
+                </div>
+            </div>
+            <div class="back"></div>
+        </section>
 
-            <section class="page page-4">
-                <div class="front">
-                    <h5 class="text-indent">
-                        我唔知呢封會唔會係最後一封信 所以就將所有想寫嘅都寫低 好多平時講唔到嘅 都淨係可以喺信先講到 
-                        其實我都唔知仲有咩可以寫 所以我就想由我嘅角度去睇下我哋呢段關係 同埋其實我想知你係點樣睇我哋嘅呢段關係（原來都幾難寫）
-                        我應該冇講過 當初我選擇你去開始一段新嘅親密關係 係見到你同我都係同一樣人 但係你有令我好仰慕嘅嘢 我欣賞你嘅熱情同純真 
-                        你會有明確嘅目標可能明知結果都會想去試一試嘅憧憬 敢於表達自己情緒嘅坦率都係好吸引我嘅點 好幸運亦都好感激你有選擇到我啦 
-                        佢一齊成長一路上我有見到你變得越嚟越好 我亦都有想變得更好去追隨你嘅腳步（至少唔好話丟你架先啦嘛🤣🤣）喺當初我哋啱啱熟落嘅時候 我有花時間去研究你嘅所有嘢 
-                        希望你同我相處嘅時候係開心舒服 所以我覺得所做嘅嘢係有意義 可能呢個亦都係我愛你嘅方式 我自問亦都投放咗好多（愛）落去呢段關係入面 
-                        但係我慢慢發現我太敏感喇 我投放得多我就越敏感 雖然感受到嘅愛都係等比例放大 但係你喺我心目中嘅位置越嚟越高 就慢慢變成一個雙刃劍 我開始唔識把握 諗返喺當時你係會成日搵我打機 出去 問問題 咩都講下都好 我會覺得呢個可能係你愛我嘅方式 
-                        但係對唔住呀當時嘅我並沒有好好咁樣珍惜到 之後我感覺到次數有下降 我有嘗試去挽回嗎？ 但係好似都返唔到去之前咁
-                    </h5>
-                </div>
-                <div class="back"></div>
-            </section>
+        <section class="page page-3">
+            <div class="front" style="justify-content: center; text-align: center;">
+                <h1 style="color: #d31027; font-size: 1.8rem;">⚠️ Warning</h1>
+                <p style="font-style: italic; font-size: 1.2rem; margin-top: 20px;">
+                    請做好心理準備再進入下一頁。<br><br>
+                    我竟然寫咗封我寫完又唔會開心，<br>
+                    你睇完又唔會開心既信出嚟。<br>
+                    仲要寫到 1999...<br>
+                    不如當冇封信好過？
+                </p>
+            </div>
+            <div class="back"></div>
+        </section>
 
-            <section class="page page-5">
-                <div class="front">
-                    <h5 class="text-indent">
-                        其實我覺得你識新朋友亦都無可厚非 我自問並唔係咩有趣嘅人 
-                        同我玩其實一啲都唔有趣 之後就好容易呷醋 但係都冇辦法 我明白可能我喺你心目中嘅位置唔係好高 我亦都冇特別問過無謂自取其辱啦 但係我覺得我有樣嘢好就好似係嗰啲追星聖體 
-                        可以淨係靠一樣好嘅嘢就諗記住好耐 其他一般或者唔好嘅嘢都可以當冇發生 就好似到後面我哋都冇鬧過交 但係而家我越嚟越開始唔知你係點諗我感受唔到我同你之間 
-                        一開始我會覺得每個人對感情嘅投入同行為都會唔同係正常嘅 但係後面我越嚟越覺得我同你係同一類人 但係點解好似我得到嘅同預想嘅又有出入呢 我估係我呢個角色嘅問題 
-                        我妒忌你畀到我想要嘅嘢畀其他人 但係呢個並唔係你嘅問題更加唔係你嘅責任 
-                        我而家會諗定係我擺得你太高呢 但系其實你絕對值得 如果當時你唔係嗰個情況 而又唔係得返我一個 
-                        你會唔會仲揀我呢 又或者當時我有好好珍惜會唔會又唔同呢 而家令到我好迷失呀我都唔知點樣行落去 我都仲係嗰個淨係識得逃避嘅垃圾 其實唔介意講埋啦我並唔捨得呢段關係同你 
-                        我會諗啊如果我唔喺度你點算呢 但係而家彤仔大個啦 冇我都可以處理到所有嘢 我亦都諗唔到我留低嘅意義 就係為咗自私咁留喺你身邊嗎？要講嘅都差唔多啦 就算點樣都好都冇可能返去之前 
-                        有一段咁嘅回憶已經好滿足 可能而家先係真係最好嘅關係 應該都唔會再講呢啲嘢啦 下一頁就係客套嘢啦 冇興趣就直接熄咗佢啦好好享受你嘅聖誕
-                    </h5>
+        <section class="page page-4">
+            <div class="front">
+                <div class="text-indent">
+                    我唔知呢封會唔會係最後一封信，所以就將所有想寫嘅都寫低，好多平時講唔到嘅，都淨係可以喺信先講到。
+                    其實我都唔知仲有咩可以寫，所以我就想由我嘅角度去睇下我哋呢段關係，同埋其實我想知你係點樣睇我哋嘅呢段關係（原來都幾難寫）。
                 </div>
-                <div class="back"></div>
-            </section>
+                <div class="text-indent">
+                    我應該冇講過，當初我選擇你去開始一段新嘅親密關係，係見到你同我都係同一樣人，但係你有令我好仰慕嘅嘢。我欣賞你嘅熱情同純真，你會有明確嘅目標，可能明知結果都會想去試一試嘅憧憬，敢於表達自己情緒嘅坦率，都係好吸引我嘅點。好幸運亦都好感激你有選擇到我啦。
+                </div>
+                <div class="text-indent">
+                    喺一齊成長一路上我有見到你變得越嚟越好，我亦都有想變得更好去追隨你嘅腳步（至少唔好話丟你架先啦嘛🤣🤣）。喺當初我哋啱啱熟落嘅時候，我有花時間去研究你嘅所有嘢，希望你同我相處嘅時候係開心舒服，所以我覺得所做嘅嘢係有意義，可能呢個亦都係我愛你嘅方式，我自問亦都投放咗好多（愛）落去呢段關係入面。
+                </div>
+            </div>
+            <div class="back"></div>
+        </section>
 
-            <section class="page page-6">
-                <div class="front">
-                    <h3 class="text-indent">
-                        其實你嘅所有嘢我都有留意 我明白屬於我嘅階段已經過去 
-                        你有新嘅階段同困難同新嘅人去面對 你亦成長好多 你可能覺得自己並唔好 又好似咩都做唔好咁 但係至少喺我眼中你已經做得好好 你已經成長又變強咗好多 再唔係之前小小事咩嘢都叫我嘅彤 雖然好似變咗好多 
-                        但係彤依然係彤 我亦會盡我所能去完成承諾 可能我嘅愛好少 又一文不值 亦一樣希望你學識自愛 但希望可以喺你孤獨,覺得自己一事無成嘅時候可以諗起你唔係淨係得自己仲有家人同我哋 我雖然無辦法再以阿哥自居 
-                        但係你喺出面突然想喺我度做返阿妹 我無任歡迎 聖誕快樂啦 彤
-                    </h3>
+        <section class="page page-5">
+            <div class="front">
+                <div class="text-indent" style="font-size: 0.95em;">
+                    但係我慢慢發現我太敏感喇，我投放得多我就越敏感。雖然感受到嘅愛都係等比例放大，但係你喺我心目中嘅位置越嚟越高，就慢慢變成一個雙刃劍。我開始唔識把握，諗返喺當時你係會成日搵我打機、出去、問問題、咩都講下都好，我會覺得呢個可能係你愛我嘅方式。但係對唔住呀，當時嘅我並沒有好好咁樣珍惜到。之後我感覺到次數有下降，我有嘗試去挽回嗎？但係好似都返唔到去之前咁。
                 </div>
-                <div class="back"></div>
-            </section>
-        </div>
+                <div class="text-indent" style="font-size: 0.95em;">
+                    其實我覺得你識新朋友亦都無可厚非，我自問並唔係咩有趣嘅人，同我玩其實一啲都唔有趣，之後就好容易呷醋。但係都冇辦法，我明白可能我喺你心目中嘅位置唔係好高，我亦都冇特別問過無謂自取其辱啦。但係我覺得我有樣嘢好就好似係嗰啲追星聖體，可以淨係靠一樣好嘅嘢就記住好耐，其他一般或者唔好嘅嘢都可以當冇發生。
+                </div>
+            </div>
+            <div class="back"></div>
+        </section>
+        
+         <section class="page page-6">
+            <div class="front">
+                <div class="text-indent">
+                    其實你嘅所有嘢我都有留意，我明白屬於我嘅階段已經過去。你有新嘅階段同困難同新嘅人去面對，你亦成長好多。你可能覺得自己並唔好，又好似咩都做唔好咁，但係至少喺我眼中你已經做得好好，你已經成長又變強咗好多，再唔係之前小小事咩嘢都叫我嘅彤。
+                </div>
+                <div class="text-indent">
+                    雖然好似變咗好多，但係彤依然係彤。我亦會盡我所能去完成承諾。可能我嘅愛好少，又一文不值，亦一樣希望你學識自愛。但希望可以喺你孤獨、覺得自己一事無成嘅時候可以諗起，你唔係淨係得自己，仲有家人同我哋。我雖然無辦法再以阿哥自居，但係你喺出面突然想喺我度做返阿妹，我無任歡迎。
+                </div>
+                <br>
+                <div style="text-align: center; font-family: 'Dancing Script', cursive; font-size: 1.5em; color: #d31027;">
+                    聖誕快樂啦 彤
+                </div>
+            </div>
+            <div class="back"></div>
+        </section>
+
     </main>
 
     <script>
-        // 封裝函數以避免污染全局變量 (Encapsulation)
         (function() {
-            // 添加雪花效果
+            // 核心邏輯：Z-Index 管理
+            const pages = Array.from(document.querySelectorAll('.page'));
+            const totalPages = pages.length;
+
+            // 初始化 Z-index (Page 1 在最上面: 6, 5, 4, 3, 2, 1)
+            function setInitialZIndex() {
+                pages.forEach((page, index) => {
+                    page.style.zIndex = totalPages - index;
+                });
+            }
+            setInitialZIndex();
+
+            // 處理翻頁邏輯
+            pages.forEach((page, index) => {
+                page.addEventListener('click', function(e) {
+                    // 防止事件冒泡，避免點擊時觸發到底下的頁面
+                    e.stopPropagation();
+
+                    if (this.classList.contains('flipped')) {
+                        // 如果已經翻咗，就合埋 (Unflip)
+                        this.classList.remove('flipped');
+                        
+                        // 重置 Z-index：合埋嘅時候，呢頁要變返高層級，遮住後面嘅頁
+                        // 延遲一點點改變 Z-index 令動畫更順暢，或者直接改
+                        setTimeout(() => {
+                            page.style.zIndex = totalPages - index; 
+                        }, 500); // 等動畫做完一半先改層級
+
+                    } else {
+                        // 如果未翻，就翻開 (Flip)
+                        this.classList.add('flipped');
+                        
+                        // 關鍵修正：翻開咗嘅頁，Z-index 要調整
+                        // 當頁面翻去左邊，佢依然要保持喺「左邊堆疊」嘅最上面
+                        // 但對於「右邊堆疊」嚟講，佢唔可以遮住下一頁
+                        page.style.zIndex = 10 + index; 
+                    }
+                });
+            });
+
+            // 雪花特效 (優化版)
             function createSnowflakes() {
-                const snowflakes = ['❄', '❅', '❆'];
+                const snowflakes = ['❄', '❅', '❆', '•'];
                 const container = document.body;
                 
                 setInterval(() => {
                     const snowflake = document.createElement('div');
                     snowflake.className = 'snowflake';
-                    // 優化：使用 window.innerWidth 確保不出界
                     snowflake.style.left = Math.random() * 100 + 'vw';
                     snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-                    snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    snowflake.style.opacity = Math.random();
+                    snowflake.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    snowflake.style.animationDuration = (Math.random() * 3 + 4) + 's'; // 飄慢啲
                     container.appendChild(snowflake);
                     
-                    // 清理 DOM 元素
-                    setTimeout(() => {
-                        snowflake.remove();
-                    }, 5000);
-                }, 300);
+                    setTimeout(() => { snowflake.remove(); }, 7000);
+                }, 200);
             }
-
-            // 為每一頁添加翻頁效果
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => {
-                page.addEventListener('click', function() {
-                    this.classList.toggle('flipped');
-                });
-            });
-
-            // 開始雪花動畫
             createSnowflakes();
         })();
     </script>
 </body>
 </html>
-
