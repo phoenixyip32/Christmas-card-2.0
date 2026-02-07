@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Christmas Card</title>
     <style>
+        /* CSS Reset & Global Styles */
         * {
             margin: 0;
             padding: 0;
@@ -19,8 +20,10 @@
             justify-content: center;
             font-family: Arial, sans-serif;
             padding: 20px;
+            overflow-x: hidden; /* 防止雪花導致的滾動條閃爍 */
         }
 
+        /* Layout Containers */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -38,6 +41,7 @@
             perspective: 2500px;
         }
         
+        /* Page Structure */
         .page {
             position: absolute;
             width: 100%;
@@ -51,6 +55,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
+        /* Z-Index Logic */
         .page-1 { z-index: 6; }
         .page-2 { z-index: 5; }
         .page-3 { z-index: 4; }
@@ -58,6 +63,7 @@
         .page-5 { z-index: 2; }
         .page-6 { z-index: 1; }
         
+        /* Page Content Faces */
         .front, .back {
             position: absolute;
             width: 100%;
@@ -83,6 +89,7 @@
             transform: rotateY(180deg);
         }
         
+        /* White Background Pages */
         .page-2 .front, .page-3 .front, .page-4 .front, .page-5 .front, .page-6 .front {
             background: white;
             color: #333;
@@ -92,6 +99,7 @@
             transform: rotateY(-180deg);
         }
 
+        /* Typography Utilities */
         .text-xl {
             font-size: clamp(24px, 5vw, 36px);
             margin-bottom: 4vh;
@@ -101,23 +109,28 @@
             font-size: clamp(18px, 4vw, 24px);
             margin-bottom: 2vh;
         }
-
-        .emoji {
-            font-size: clamp(36px, 8vw, 72px);
-            margin: 3vh 0;
+        
+        /* 新增：用於替代 &nbsp; 的縮排 Class，保持視覺一致 */
+        .text-indent {
+            text-indent: 2em; /* 大約等於 7 個 &nbsp; 的寬度 */
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
-
-        .snowflake {
-            color: white;
-            position: fixed;
-            font-size: clamp(16px, 3vw, 20px);
-            animation: fall linear infinite;
-            pointer-events: none;
+        
+        /* 由於移除了 P 標籤包裹，這裡確保 h3, h4, h5 顯示效果與之前一致 (Bold) */
+        .book h3, .book h4, .book h5 {
+            font-weight: bold;
+            width: 100%; /* 確保文字換行行為一致 */
+            line-height: 1.5; /* 增加可讀性，原本 P 標籤可能有類似繼承 */
         }
+        
+        /* 原代碼中 h4, h5 大小未定義，繼承 user agent 樣式。
+           由於原本 * {margin:0} 重置了所有 margin，
+           這裡不需要額外設置 margin */
 
         .signature {
             align-self: flex-end;
-            margin-top: 0px;
+            margin-top: 0px; /* 原代碼為 0px */
             margin-right: 15px;
             font-size: 20px;
         }
@@ -128,6 +141,16 @@
             justify-content: center;
             align-items: center;
             margin: 10px 0;
+        }
+
+        /* Snowflake Animation */
+        .snowflake {
+            color: white;
+            position: fixed;
+            font-size: clamp(16px, 3vw, 20px);
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: 9999; /* 確保雪花在最上層 */
         }
 
         @keyframes fall {
@@ -144,11 +167,11 @@
             }
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             .book {
                 max-width: 100%;
             }
-
             .front, .back {
                 padding: 20px;
             }
@@ -162,124 +185,126 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <main class="container">
         <div class="book">
-            <!-- 封面 -->
-            <div class="page page-1">
+            <section class="page page-1">
                 <div class="front">
                     <h1 class="text-xl">✨Merry Chirstmas✨</h1>
                     <p class="text-lg">點擊打開卡片</p>
-                    <div> <img src="https://png.pngtree.com/png-clipart/20210310/original/pngtree-christmas-christmas-tree-and-snowman-png-image_5933267.jpg" alt="Flowers in Chania" width="100%" height="100%"> </div>
+                    <div style="width: 100%;"> 
+                        <img src="https://png.pngtree.com/png-clipart/20210310/original/pngtree-christmas-christmas-tree-and-snowman-png-image_5933267.jpg" alt="Christmas Decoration" style="width: 100%; height: auto; display: block;"> 
+                    </div>
                 </div>
-                <div class="back">
-                </div>
-            </div>
+                <div class="back"></div>
+            </section>
 
-            <!-- 第二頁 -->
-            <div class="page page-2">
+            <section class="page page-2">
                 <div class="front">
                     <h2>Dear 阿彤:</h2>
                     <br>
-                    <p><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先 聖誕快樂先 我知你最近都瞓得唔好 所以就準備咗啲禮物希望可以幫到你啦 咁我就準備咗個夜燈 我知你瞓覺鍾意開燈 但係開燈瞓覺都唔係咁好㗎 咁你就可以用佢夜晚就有啲光就唔使開燈瞓覺 唔使掁住隻眼可能就瞓得好啲 
-                        之後另外一樣就係助眠噴劑？ 佢好似係喺你瞓覺前噴落個脷底兩下 個盒後面都有說明書嘅 我本身諗住買類似助眠香薰嘅 但係去到買我又唔知你會唔會唔鍾意啲味 之後個sales就推介咗呢個畀我 咁就穩陣啲 你咪你唔鍾意陣味啦 希望呢兩樣嘢可以幫到你瞓個好覺啦 
-                        好啦最後啦 都係一樣啦自己照顧自己身體啦 你知你自己身體唔好就唔好捱咁多夜 食咁多煙啦 睇住自己身體呀 其他留返後面封信講 聖誕快樂啦</p></h4>
+                    <h4 class="text-indent">
+                        首先 聖誕快樂先 我知你最近都瞓得唔好 所以就準備咗啲禮物希望可以幫到你啦 咁我就準備咗個夜燈 我知你瞓覺鍾意開燈 但係開燈瞓覺都唔係咁好㗎 咁你就可以用佢夜晚就有啲光就唔使開燈瞓覺 唔使掁住隻眼可能就瞓得好啲 
+                        之後另外一樣就係助眠噴劑？ 佢好似係喺你瞓覺前噴落個脷底兩下 個盒後面都有說明書嘅 我本身諗住買類似助眠香薰嘅 但係去到買我又唔知你會唔會唔鍾意啲味 之後個sales就推介咗呢個畀我 咁就穩陣啲 你咪你唔鍾意陣味啦 希望呢兩樣嘢可以幫到你瞓個好覺啦 
+                        好啦最後啦 都係一樣啦自己照顧自己身體啦 你知你自己身體唔好就唔好捱咁多夜 食咁多煙啦 睇住自己身體呀 其他留返後面封信講 聖誕快樂啦
+                    </h4>
                     <div class="signature">謙</div>
                     <div class="centered-image">
                         <img src="https://img.freepik.com/premium-vector/drawing-santa-carrying-bag-presents_1450-565.jpg" alt="Santa" width="35%">
                     </div>
                 </div>
-                <div class="back">
-                </div>
-            </div>
+                <div class="back"></div>
+            </section>
 
-            <!-- 第三頁 -->
-            <div class="page page-3">
+            <section class="page page-3">
                 <div class="front">
-                    <h1 class="text-center text-xl">請做好心理準備再進入下一頁 我竟然寫咗封我寫完又唔會開心 你睇完又唔會開心既信出嚟 仲要寫到1999 不如當冇封信好過</h1>
+                    <h1 class="text-xl">請做好心理準備再進入下一頁 我竟然寫咗封我寫完又唔會開心 你睇完又唔會開心既信出嚟 仲要寫到1999 不如當冇封信好過</h1>
                 </div>
-                <div class="back">
-                </div>
-            </div>
+                <div class="back"></div>
+            </section>
 
-            <!-- 第四頁 -->
-            <div class="page page-4">
+            <section class="page page-4">
                 <div class="front">
-                    <p><h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我唔知呢封會唔會係最後一封信 所以就將所有想寫嘅都寫低 好多平時講唔到嘅 都淨係可以喺信先講到 
+                    <h5 class="text-indent">
+                        我唔知呢封會唔會係最後一封信 所以就將所有想寫嘅都寫低 好多平時講唔到嘅 都淨係可以喺信先講到 
                         其實我都唔知仲有咩可以寫 所以我就想由我嘅角度去睇下我哋呢段關係 同埋其實我想知你係點樣睇我哋嘅呢段關係（原來都幾難寫）
-                        我應該冇講過 當初我選擇你去開始一段新嘅親密關係 係見到你同我都係同一樣人 但係你有令我好仰慕嘅嘢 我欣賞你嘅熱情同純真 
-                        你會有明確嘅目標可能明知結果都會想去試一試嘅憧憬 敢於表達自己情緒嘅坦率都係好吸引我嘅點 好幸運亦都好感激你有選擇到我啦 
-                        佢一齊成長一路上我有見到你變得越嚟越好 我亦都有想變得更好去追隨你嘅腳步（至少唔好話丟你架先啦嘛🤣🤣）喺當初我哋啱啱熟落嘅時候 我有花時間去研究你嘅所有嘢 
-                        希望你同我相處嘅時候係開心舒服 所以我覺得所做嘅嘢係有意義 可能呢個亦都係我愛你嘅方式 我自問亦都投放咗好多（愛）落去呢段關係入面 
-                        但係我慢慢發現我太敏感喇 我投放得多我就越敏感 雖然感受到嘅愛都係等比例放大 但係你喺我心目中嘅位置越嚟越高 就慢慢變成一個雙刃劍 我開始唔識把握 諗返喺當時你係會成日搵我打機 出去 問問題 咩都講下都好 我會覺得呢個可能係你愛我嘅方式 
+                        我應該冇講過 當初我選擇你去開始一段新嘅親密關係 係見到你同我都係同一樣人 但係你有令我好仰慕嘅嘢 我欣賞你嘅熱情同純真 
+                        你會有明確嘅目標可能明知結果都會想去試一試嘅憧憬 敢於表達自己情緒嘅坦率都係好吸引我嘅點 好幸運亦都好感激你有選擇到我啦 
+                        佢一齊成長一路上我有見到你變得越嚟越好 我亦都有想變得更好去追隨你嘅腳步（至少唔好話丟你架先啦嘛🤣🤣）喺當初我哋啱啱熟落嘅時候 我有花時間去研究你嘅所有嘢 
+                        希望你同我相處嘅時候係開心舒服 所以我覺得所做嘅嘢係有意義 可能呢個亦都係我愛你嘅方式 我自問亦都投放咗好多（愛）落去呢段關係入面 
+                        但係我慢慢發現我太敏感喇 我投放得多我就越敏感 雖然感受到嘅愛都係等比例放大 但係你喺我心目中嘅位置越嚟越高 就慢慢變成一個雙刃劍 我開始唔識把握 諗返喺當時你係會成日搵我打機 出去 問問題 咩都講下都好 我會覺得呢個可能係你愛我嘅方式 
                         但係對唔住呀當時嘅我並沒有好好咁樣珍惜到 之後我感覺到次數有下降 我有嘗試去挽回嗎？ 但係好似都返唔到去之前咁
-                    </p></h5>
+                    </h5>
                 </div>
-                <div class="back">
-                </div>
-            </div>
+                <div class="back"></div>
+            </section>
 
-            <!-- 第四頁 -->
-            <div class="page page-5">
+            <section class="page page-5">
                 <div class="front">
-                    <p><h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其實我覺得你識新朋友亦都無可厚非 我自問並唔係咩有趣嘅人 
-                        同我玩其實一啲都唔有趣 之後就好容易呷醋 但係都冇辦法 我明白可能我喺你心目中嘅位置唔係好高 我亦都冇特別問過無謂自取其辱啦 但係我覺得我有樣嘢好就好似係嗰啲追星聖體 
-                        可以淨係靠一樣好嘅嘢就諗記住好耐 其他一般或者唔好嘅嘢都可以當冇發生 就好似到後面我哋都冇鬧過交 但係而家我越嚟越開始唔知你係點諗我感受唔到我同你之間 
-                        一開始我會覺得每個人對感情嘅投入同行為都會唔同係正常嘅 但係後面我越嚟越覺得我同你係同一類人 但係點解好似我得到嘅同預想嘅又有出入呢 我估係我呢個角色嘅問題 
-                        我妒忌你畀到我想要嘅嘢畀其他人 但係呢個並唔係你嘅問題更加唔係你嘅責任 
-                        我而家會諗定係我擺得你太高呢 但系其實你絕對值得 如果當時你唔係嗰個情況 而又唔係得返我一個 
-                        你會唔會仲揀我呢 又或者當時我有好好珍惜會唔會又唔同呢 而家令到我好迷失呀我都唔知點樣行落去 我都仲係嗰個淨係識得逃避嘅垃圾 其實唔介意講埋啦我並唔捨得呢段關係同你 
-                        我會諗啊如果我唔喺度你點算呢 但係而家彤仔大個啦 冇我都可以處理到所有嘢 我亦都諗唔到我留低嘅意義 就係為咗自私咁留喺你身邊嗎？要講嘅都差唔多啦 就算點樣都好都冇可能返去之前 
+                    <h5 class="text-indent">
+                        其實我覺得你識新朋友亦都無可厚非 我自問並唔係咩有趣嘅人 
+                        同我玩其實一啲都唔有趣 之後就好容易呷醋 但係都冇辦法 我明白可能我喺你心目中嘅位置唔係好高 我亦都冇特別問過無謂自取其辱啦 但係我覺得我有樣嘢好就好似係嗰啲追星聖體 
+                        可以淨係靠一樣好嘅嘢就諗記住好耐 其他一般或者唔好嘅嘢都可以當冇發生 就好似到後面我哋都冇鬧過交 但係而家我越嚟越開始唔知你係點諗我感受唔到我同你之間 
+                        一開始我會覺得每個人對感情嘅投入同行為都會唔同係正常嘅 但係後面我越嚟越覺得我同你係同一類人 但係點解好似我得到嘅同預想嘅又有出入呢 我估係我呢個角色嘅問題 
+                        我妒忌你畀到我想要嘅嘢畀其他人 但係呢個並唔係你嘅問題更加唔係你嘅責任 
+                        我而家會諗定係我擺得你太高呢 但系其實你絕對值得 如果當時你唔係嗰個情況 而又唔係得返我一個 
+                        你會唔會仲揀我呢 又或者當時我有好好珍惜會唔會又唔同呢 而家令到我好迷失呀我都唔知點樣行落去 我都仲係嗰個淨係識得逃避嘅垃圾 其實唔介意講埋啦我並唔捨得呢段關係同你 
+                        我會諗啊如果我唔喺度你點算呢 但係而家彤仔大個啦 冇我都可以處理到所有嘢 我亦都諗唔到我留低嘅意義 就係為咗自私咁留喺你身邊嗎？要講嘅都差唔多啦 就算點樣都好都冇可能返去之前 
                         有一段咁嘅回憶已經好滿足 可能而家先係真係最好嘅關係 應該都唔會再講呢啲嘢啦 下一頁就係客套嘢啦 冇興趣就直接熄咗佢啦好好享受你嘅聖誕
-                    </p></h5>
+                    </h5>
                 </div>
-                <div class="back">
-                </div>
-            </div>
+                <div class="back"></div>
+            </section>
 
-            <!-- 第四頁 -->
-            <div class="page page-6">
+            <section class="page page-6">
                 <div class="front">
-                    <p><h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其實你嘅所有嘢我都有留意 我明白屬於我嘅階段已經過去 
-                        你有新嘅階段同困難同新嘅人去面對 你亦成長好多 你可能覺得自己並唔好 又好似咩都做唔好咁 但係至少喺我眼中你已經做得好好 你已經成長又變強咗好多 再唔係之前小小事咩嘢都叫我嘅彤 雖然好似變咗好多 
-                        但係彤依然係彤 我亦會盡我所能去完成承諾 可能我嘅愛好少 又一文不值 亦一樣希望你學識自愛 但希望可以喺你孤獨,覺得自己一事無成嘅時候可以諗起你唔係淨係得自己仲有家人同我哋 我雖然無辦法再以阿哥自居 
+                    <h3 class="text-indent">
+                        其實你嘅所有嘢我都有留意 我明白屬於我嘅階段已經過去 
+                        你有新嘅階段同困難同新嘅人去面對 你亦成長好多 你可能覺得自己並唔好 又好似咩都做唔好咁 但係至少喺我眼中你已經做得好好 你已經成長又變強咗好多 再唔係之前小小事咩嘢都叫我嘅彤 雖然好似變咗好多 
+                        但係彤依然係彤 我亦會盡我所能去完成承諾 可能我嘅愛好少 又一文不值 亦一樣希望你學識自愛 但希望可以喺你孤獨,覺得自己一事無成嘅時候可以諗起你唔係淨係得自己仲有家人同我哋 我雖然無辦法再以阿哥自居 
                         但係你喺出面突然想喺我度做返阿妹 我無任歡迎 聖誕快樂啦 彤
-                    </p></h3>
+                    </h3>
                 </div>
-                <div class="back">
-                </div>
-            </div>
+                <div class="back"></div>
+            </section>
         </div>
-    </div>
+    </main>
 
     <script>
-        // 添加雪花效果
-        function createSnowflakes() {
-            const snowflakes = ['❄', '❅', '❆'];
-            const container = document.body;
-            
-            setInterval(() => {
-                const snowflake = document.createElement('div');
-                snowflake.className = 'snowflake';
-                snowflake.style.left = Math.random() * window.innerWidth + 'px';
-                snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-                snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-                container.appendChild(snowflake);
+        // 封裝函數以避免污染全局變量 (Encapsulation)
+        (function() {
+            // 添加雪花效果
+            function createSnowflakes() {
+                const snowflakes = ['❄', '❅', '❆'];
+                const container = document.body;
                 
-                setTimeout(() => {
-                    container.removeChild(snowflake);
-                }, 5000);
-            }, 300);
-        }
+                setInterval(() => {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    // 優化：使用 window.innerWidth 確保不出界
+                    snowflake.style.left = Math.random() * 100 + 'vw';
+                    snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                    snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    container.appendChild(snowflake);
+                    
+                    // 清理 DOM 元素
+                    setTimeout(() => {
+                        snowflake.remove();
+                    }, 5000);
+                }, 300);
+            }
 
-        // 為每一頁添加翻頁效果
-        document.querySelectorAll('.page').forEach(page => {
-            page.addEventListener('click', function() {
-                this.classList.toggle('flipped');
+            // 為每一頁添加翻頁效果
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
             });
-        });
 
-        // 開始雪花動畫
-        createSnowflakes();
+            // 開始雪花動畫
+            createSnowflakes();
+        })();
     </script>
 </body>
 </html>
+
